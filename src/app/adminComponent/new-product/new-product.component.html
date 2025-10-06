@@ -1,0 +1,39 @@
+<mat-toolbar class="mat-toolbar  mat-toolbar-single-row" color="primary">
+    <h1 style="font-family:muli;">عنصر جديد</h1>
+</mat-toolbar>
+<div align="center" *ngIf="!Done" style="height: 140px;">
+    <mat-spinner diameter="100"></mat-spinner>
+</div>
+<mat-grid-list cols=5 rowHeight=140 style="border: 5px #eee solid;" *ngIf="Done">
+    <mat-grid-tile>
+        <mat-form-field appearance="outline" style="width: 80%;">
+            <mat-label>اسم الوجبة</mat-label>
+            <input matInput [(ngModel)]="name" placeholder="اسم الوجبة">
+        </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile>
+        <mat-form-field appearance="outline" style="width: 80%;">
+            <mat-label>السعر</mat-label>
+            <input matInput [(ngModel)]="price" placeholder="السعر" type="number">
+        </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile>
+        <mat-form-field appearance="outline" style="width: 80%;">
+            <mat-label>النوع</mat-label>
+            <mat-select [(ngModel)]="type">
+                <mat-option *ngFor="let x of Products" [value]="x.Id">
+                    {{x.Name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile>
+        <mat-form-field appearance="outline" style="width: 80%;">
+
+            <input matInput [(ngModel)]="quantity" placeholder="الكمية" type="number">
+        </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile>
+        <button mat-raised-button color="accent" class="button" [disabled]="empty()" (click)="create()">اضافة</button>
+    </mat-grid-tile>
+</mat-grid-list>

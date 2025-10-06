@@ -1,0 +1,52 @@
+<div>
+    <mat-toolbar class="mat-toolbar  mat-toolbar-single-row" color="primary">
+        Invoice #{{data.orderId}}
+    </mat-toolbar>
+    <mat-spinner style="margin-left: 45%;margin-top: 20%;" *ngIf="!Done" color="accent"></mat-spinner>
+    <table mat-table [dataSource]="dataReq" style="width: 100%;" *ngIf="Done">
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef> الاسم </th>
+            <td mat-cell *matCellDef="let transaction"> {{transaction.Product.Name}} </td>
+            <td mat-footer-cell *matFooterCellDef> المجموع </td>
+        </ng-container>
+        <ng-container matColumnDef="unitPrice">
+            <th mat-header-cell *matHeaderCellDef> السعر الافرادي </th>
+            <td mat-cell *matCellDef="let transaction"> {{transaction.UnitPrice |number}} </td>
+            <td mat-footer-cell *matFooterCellDef> </td>
+        </ng-container>
+        <ng-container matColumnDef="Quantity">
+            <th mat-header-cell *matHeaderCellDef> الكمية </th>
+            <td mat-cell *matCellDef="let transaction"> {{transaction.Quantity |number}} </td>
+            <td mat-footer-cell *matFooterCellDef> </td>
+        </ng-container>
+        <ng-container matColumnDef="Price">
+            <th mat-header-cell *matHeaderCellDef> السعر الاجمالي </th>
+            <td mat-cell *matCellDef="let transaction">
+                {{transaction.UnitPrice*transaction.Quantity |number}} </td>
+            <td mat-footer-cell *matFooterCellDef> </td>
+        </ng-container>
+        <ng-container matColumnDef="Extra">
+            <th mat-header-cell *matHeaderCellDef> الاضافات</th>
+            <td mat-cell *matCellDef="let transaction"> {{getExtra(transaction)}} </td>
+            <td mat-footer-cell *matFooterCellDef> </td>
+        </ng-container>
+        <ng-container matColumnDef="ExtraPrice">
+            <th mat-header-cell *matHeaderCellDef> سعر الاضافات</th>
+            <td mat-cell *matCellDef="let transaction"> {{extraFinalPrice(transaction) |number}} </td>
+            <td mat-footer-cell *matFooterCellDef> </td>
+        </ng-container>
+        <ng-container matColumnDef="final">
+            <th mat-header-cell *matHeaderCellDef> السعر النهائي</th>
+            <td mat-cell *matCellDef="let transaction">
+                {{extraFinalPrice(transaction)+transaction.UnitPrice*transaction.Quantity |number}} </td>
+            <td mat-footer-cell *matFooterCellDef> {{getTotalPriceFinal() |number}} </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <tr mat-footer-row *matFooterRowDef="displayedColumns" style="background-color: #eee;"></tr>
+    </table>    
+    <div *ngIf="data.orderNote&&Done" style="background-color:whitesmoke ;">
+        <h2 class="mat-h5">
+            {{data.orderNote}}</h2>
+    </div>
+</div>

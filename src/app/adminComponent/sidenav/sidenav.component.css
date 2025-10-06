@@ -1,0 +1,84 @@
+.example-sidenav {
+    width: 10%;
+}
+
+.example-container {
+    height: 88%;
+}   
+
+.start-card {
+    transition: none !important;
+    box-shadow: none !important;
+}
+
+.card-nav {
+    width: 90%;
+    background-color: #eee;
+    color: black;
+    font-size: large;
+    font-family: muli;
+    text-align: center;
+}
+
+.card-nav-clicked {
+    width: 90%;
+    background-color: lightseagreen;
+    color: white;
+    font-size: large;
+    font-family: muli;
+    text-align: center;
+}
+
+.card-nav:hover {
+    background-color: grey;
+    cursor: pointer;
+}
+
+.tool1 {
+    background-color: #009688;
+}
+
+.tool2 {
+    background-color: grey;
+}
+
+.Enable {
+    color: white;
+}
+
+.mat-h1 {
+    font-family: muli;
+    font-weight: bold;
+    position: absolute;
+    right: 0;
+    margin-right: 20PX;
+    color: white;
+}
+.active{
+    color:#009688;
+}
+.option{
+    width:100%;
+    text-align: center;
+    cursor: pointer;
+    background-color: whitesmoke;
+    box-shadow: none !important;
+}
+.mat-drawer-content{
+    overflow: none !important;
+}
+.active{
+    background-color: #009688   ;
+    color: white;
+}
+@media print{
+    #other{
+        display: none;
+    }
+    #print{
+        display: block;
+    }
+}
+ #print{
+    display: none;
+ }

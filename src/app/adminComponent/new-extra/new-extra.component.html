@@ -1,0 +1,45 @@
+<mat-toolbar class="mat-toolbar  mat-toolbar-single-row" color="primary">
+    <h1 style="font-family:muli;">اضافة جديدة</h1>
+</mat-toolbar>
+<div style="overflow-y: auto;height: 400px;">
+    <mat-list role="list">
+        <mat-list-item role="listitem" *ngFor="let i of Extras">
+            <mat-card class="card-list">
+                <div class="form">
+                    <mat-form-field appearance="standard" class="price-input">
+                        <mat-label>الاسم</mat-label>
+
+                        <input matInput [(ngModel)]="i.Name" (change)="onChangeInput(i)">
+                    </mat-form-field>
+                </div>
+                <div class="form">
+                    <button mat-mini-fab matSuffix class="save" (click)="saveInput(i)" *ngIf="i.IsDeleted">
+                        ✔️
+                    </button>
+                    <mat-form-field appearance="standard" class="price-input">
+                        <mat-label>السعر</mat-label>
+                        <input matInput [(ngModel)]="i.Price" (change)="onChangeInput(i)" type="number" min="0">
+                    </mat-form-field>
+                </div>
+            </mat-card>
+
+        </mat-list-item>
+    </mat-list>
+</div>
+<mat-grid-list cols=3 rowHeight=140 style="border: 5px #eee solid;">
+    <mat-grid-tile>
+        <mat-form-field appearance="outline" style="width: 80%;">
+            <mat-label>الاسم</mat-label>
+            <input matInput [(ngModel)]="name">
+        </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile>
+        <mat-form-field appearance="outline" style="width: 80%;">
+            <mat-label>السعر</mat-label>
+            <input matInput [(ngModel)]="price" type="number">
+        </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile>
+        <button mat-raised-button color="accent" [disabled]="check()" class="button" (click)="createExtra()">اضافة</button>
+    </mat-grid-tile>
+</mat-grid-list>

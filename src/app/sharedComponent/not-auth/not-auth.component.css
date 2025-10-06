@@ -1,0 +1,17 @@
+.more-info {
+    background-color: #ff4081;
+    color: white;
+    font-size: 16px;
+}
+
+.mis-title {
+    font-size: 16px;
+    text-decoration: underline;
+    padding: 20px;
+}
+.toolbar{
+    font-family:sans-serif ;
+    height: 50px;
+    display: flex;
+    font-family: muli;
+}

@@ -1,0 +1,250 @@
+<mat-grid-list cols="12" rowHeight="100%" id="other">
+  <mat-grid-tile colspan="6" class="tile-one">
+    <mat-card class="card mat-elevation-z8" *ngIf="table">
+      <mat-card *ngIf="table.Note">
+        <h2 class="mat-h5">{{ table.Note }}</h2>
+      </mat-card>
+      <mat-card class="mat-elevation-z8">
+        <mat-grid-list cols="5" rowHeight="50px" class="info">
+          <mat-grid-tile style="font-weight: bold">الاسم</mat-grid-tile>
+          <mat-grid-tile style="font-weight: bold">الرقم</mat-grid-tile>
+          <mat-grid-tile style="font-weight: bold">البناء</mat-grid-tile>
+          <mat-grid-tile style="font-weight: bold">الطابق</mat-grid-tile>
+          <mat-grid-tile style="font-weight: bold">المعرف</mat-grid-tile>
+          <mat-grid-tile>{{ table.User.Note }}</mat-grid-tile>
+          <mat-grid-tile>{{ table.User.Phone }}</mat-grid-tile>
+          <mat-grid-tile>{{ table.Location }}</mat-grid-tile>
+          <mat-grid-tile>{{ table.Roof }}</mat-grid-tile>
+          <mat-grid-tile>{{ table.UserName }} </mat-grid-tile>
+        </mat-grid-list>
+      </mat-card>
+      <table mat-table [dataSource]="seletedOrder">
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>الاسم</th>
+          <td mat-cell *matCellDef="let transaction">
+            {{ transaction.Product.Name }}
+          </td>
+          <td mat-footer-cell *matFooterCellDef>Total</td>
+        </ng-container>
+
+        <ng-container matColumnDef="unitPrice">
+          <th mat-header-cell *matHeaderCellDef>السعر الافرادي</th>
+          <td mat-cell *matCellDef="let transaction">
+            {{ transaction.Product.InitialPrice }}
+          </td>
+          <td mat-footer-cell *matFooterCellDef></td>
+        </ng-container>
+
+        <ng-container matColumnDef="Quantity">
+          <th mat-header-cell *matHeaderCellDef>الكمية</th>
+          <td mat-cell *matCellDef="let transaction">
+            {{ transaction.Quantity }}
+          </td>
+          <td mat-footer-cell *matFooterCellDef></td>
+        </ng-container>
+
+        <ng-container matColumnDef="Price">
+          <th mat-header-cell *matHeaderCellDef>السعر الاجمالي</th>
+          <td mat-cell *matCellDef="let transaction">
+            {{ transaction.Product.InitialPrice * transaction.Quantity }}
+          </td>
+          <td mat-footer-cell *matFooterCellDef></td>
+        </ng-container>
+
+        <ng-container matColumnDef="Extra">
+          <th mat-header-cell *matHeaderCellDef>الاضافات</th>
+          <td mat-cell *matCellDef="let transaction">
+            {{ extra(transaction) }}
+          </td>
+          <td mat-footer-cell *matFooterCellDef></td>
+        </ng-container>
+        <ng-container matColumnDef="ExtraPrice">
+          <th mat-header-cell *matHeaderCellDef>سعر الاضافات</th>
+          <td mat-cell *matCellDef="let transaction">
+            {{ extraFinalPrice(transaction) }}
+          </td>
+          <td mat-footer-cell *matFooterCellDef></td>
+        </ng-container>
+
+        <ng-container matColumnDef="final">
+          <th mat-header-cell *matHeaderCellDef>السعر النهائي</th>
+          <td mat-cell *matCellDef="let transaction">
+            {{
+              transaction.Quantity * transaction.Product.InitialPrice +
+                extraFinalPrice(transaction)
+            }}
+          </td>
+          <td mat-footer-cell *matFooterCellDef>{{ getTotalPrice() }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns2"></tr>
+        <tr mat-footer-row *matFooterRowDef="displayedColumns2"></tr>
+      </table>
+
+      <span style="margin-bottom: 10%" *ngIf="ShowOp">
+        <button
+          mat-stroked-button
+          color="warn"
+          class="cancel"
+          (click)="cancel(seletedOrder)"
+        >
+          الغاء
+        </button>
+        <button
+          mat-stroked-button
+          color="primary"
+          class="done"
+          (click)="done(seletedOrder)"
+        >
+          انجاز
+        </button>
+        <button
+          mat-stroked-button
+          color="accent"
+          class="done"
+          (click)="print()"
+        >
+          طباعة
+        </button>
+      </span>
+    </mat-card>
+  </mat-grid-tile>
+  <mat-grid-tile colspan="6" class="tile-one">
+    <mat-card class="card-view">
+      <mat-toolbar class="mat-toolbar2" color="primary">
+        <h1 class="mat-h2">{{ massageType }}</h1>
+      </mat-toolbar>
+      <mat-grid-list cols="5" rowHieght="100">
+        <mat-grid-tile colspan="2">
+          <mat-form-field appearance="outline" style="width: 80%">
+            <mat-label> Date</mat-label>
+            <input matInput [matDatepicker]="Date" [(ngModel)]="Date2" />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="Date"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #Date></mat-datepicker>
+          </mat-form-field>
+        </mat-grid-tile>
+
+        <mat-grid-tile></mat-grid-tile>
+        <mat-grid-tile colspan="2">
+          <button
+            mat-raised-button
+            color="primary"
+            class="button-update"
+            (click)="click()"
+          >
+            تحديث الطلبات
+          </button>
+        </mat-grid-tile>
+      </mat-grid-list>
+
+      <div align="center" *ngIf="!Done">
+        <mat-spinner color="primary"></mat-spinner>
+      </div>
+
+      <!--             <div *ngIf="OrdersLength ==0" class="empty-div">لايوجد اي طلبات</div>
+ -->
+      <mat-form-field
+        appearance="outline"
+        *ngIf="Done && OrdersLength > 0"
+        style="width: 100%"
+      >
+        <mat-label>Filter</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="" #input />
+      </mat-form-field>
+      <div *ngIf="Done" style="overflow-y: auto; height: 60%">
+        <table mat-table [dataSource]="dataTable">
+          <ng-container matColumnDef="UserName">
+            <th mat-header-cell *matHeaderCellDef>الاسم</th>
+            <td mat-cell *matCellDef="let transaction">
+              {{ transaction.UserName }}
+            </td>
+            <td mat-footer-cell *matFooterCellDef></td>
+          </ng-container>
+          <ng-container matColumnDef="Id">
+            <th mat-header-cell *matHeaderCellDef>رقم الطلب</th>
+            <td mat-cell *matCellDef="let transaction">
+              #{{ transaction.Id }}
+            </td>
+            <td mat-footer-cell *matFooterCellDef></td>
+          </ng-container>
+          <ng-container matColumnDef="CreateDate">
+            <th mat-header-cell *matHeaderCellDef>التاريخ</th>
+            <td mat-cell *matCellDef="let transaction">
+              {{ transaction.CreateDate | date : "h:mm" }}
+            </td>
+            <td mat-footer-cell *matFooterCellDef></td>
+          </ng-container>
+          <ng-container matColumnDef="Way">
+            <th mat-header-cell *matHeaderCellDef>طريقة الدفع</th>
+            <td mat-cell *matCellDef="let transaction">
+              {{ transaction.Way == null ? "يدوي" : "كاش" }}
+            </td>
+            <td mat-footer-cell *matFooterCellDef></td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayed"></tr>
+          <tr
+            mat-row
+            matRipple
+            *matRowDef="let row; columns: displayed; let index = index"
+            (click)="openTable(row, index)"
+            [ngClass]="row.Id % 2 == 0 && index != cindex ? 'odd' : ''"
+            [class.blue]="index == cindex"
+            class="click"
+          ></tr>
+        </table>
+      </div>
+    </mat-card>
+  </mat-grid-tile>
+</mat-grid-list>
+<mat-card *ngIf="table" id="print">
+  <mat-grid-list cols="5" rowHeight="20px">
+    <mat-grid-tile style="font-weight: bold">الاسم</mat-grid-tile>
+    <mat-grid-tile style="font-weight: bold">الرقم</mat-grid-tile>
+    <mat-grid-tile style="font-weight: bold">البناء</mat-grid-tile>
+    <mat-grid-tile style="font-weight: bold">الطابق</mat-grid-tile>
+    <mat-grid-tile style="font-weight: bold">المعرف</mat-grid-tile>
+    <mat-grid-tile>{{ table.User.Note }}</mat-grid-tile>
+    <mat-grid-tile>{{ table.User.Phone }}</mat-grid-tile>
+    <mat-grid-tile>{{ table.Location }}</mat-grid-tile>
+    <mat-grid-tile>{{ table.Roof }}</mat-grid-tile>
+    <mat-grid-tile>{{ table.UserName }} </mat-grid-tile>
+  </mat-grid-list>
+
+  <hr />
+  <table
+    mat-table
+    [dataSource]="seletedOrder"
+    style="margin-bottom: 0 !important"
+  >
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>الاسم</th>
+      <td mat-cell *matCellDef="let transaction">
+        {{ transaction.Product.Name }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="Quantity">
+      <th mat-header-cell *matHeaderCellDef>الكمية</th>
+      <td mat-cell *matCellDef="let transaction">{{ transaction.Quantity }}</td>
+    </ng-container>
+    <ng-container matColumnDef="Extra">
+      <th mat-header-cell *matHeaderCellDef>الاضافات</th>
+      <td mat-cell *matCellDef="let transaction">{{ extra(transaction) }}</td>
+    </ng-container>
+    <tr
+      mat-header-row
+      *matHeaderRowDef="displayedColumns3"
+      style="height: 10px"
+    ></tr>
+    <tr
+      mat-row
+      *matRowDef="let row; columns: displayedColumns3"
+      style="height: 10px"
+    ></tr>
+  </table>
+
+  <span *ngIf="table.Note">********{{ table.Note }}********</span>
+</mat-card>

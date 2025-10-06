@@ -1,0 +1,31 @@
+<mat-toolbar class="mat-toolbar  mat-toolbar-single-row" color="primary">
+    <h1 style="font-family:muli;"> كافة الاصناف</h1>
+</mat-toolbar>
+<div align="center" *ngIf="!Done" style="margin-top: 3%;padding: 0;">
+    <mat-spinner diameter="100"></mat-spinner>
+</div>
+<div style="overflow-y: auto;height: 400px;">
+    <mat-list role="list" *ngIf="Done">
+        <mat-list-item role="listitem" *ngFor="let i of Products">
+            <mat-card>
+                {{i.Name}}
+                <mat-slide-toggle class="Enable" [checked]="i.Enable" (change)="click(i)">Active</mat-slide-toggle>
+
+            </mat-card>
+
+        </mat-list-item>
+
+    </mat-list>
+</div>
+<mat-grid-list cols=2 rowHeight=140 style="border: 5px #eee solid;">
+    <mat-grid-tile>
+        <mat-form-field appearance="outline">
+            <mat-label>اسم الصنف</mat-label>
+            <input matInput [(ngModel)]="name">
+        </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile>
+        <button mat-raised-button color="accent" (click)="closeWithResult()" class="button"
+            [disabled]="empty()">اضافة</button>
+    </mat-grid-tile>
+</mat-grid-list>

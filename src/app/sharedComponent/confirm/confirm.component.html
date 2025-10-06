@@ -1,0 +1,14 @@
+<mat-toolbar color="primary">
+    Confirmation
+</mat-toolbar>
+<mat-grid-list cols="2" rowHeight="60">
+    <mat-grid-tile colspan="2">
+        <h2>Are you Sure?</h2>
+    </mat-grid-tile>
+    <mat-grid-tile>
+        <button mat-raised-button style="width:40%" color="primary" [mat-dialog-close]="true">Yes</button>
+    </mat-grid-tile>
+    <mat-grid-tile>
+        <button mat-raised-button style="width:40%" mat-dialog-close>No</button>
+    </mat-grid-tile>
+</mat-grid-list>

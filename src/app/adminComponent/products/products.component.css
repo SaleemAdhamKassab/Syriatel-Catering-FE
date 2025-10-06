@@ -1,0 +1,92 @@
+mat-grid-tile {
+    background: #eee;
+}
+
+.tab {
+  
+    width: 100%;
+
+}
+
+mat-card {
+    width: 90%;
+}
+
+mat-list {
+    width: 100%;
+    overflow-y: auto;
+}
+
+.Enable {
+    float: right;
+    color: grey;
+    margin-right: 20px;
+    margin-left: 20px;
+    margin-top: 10px;
+}
+
+.Disable {
+    background-color: #e91e63;
+    float: right;
+    color: white;
+}
+
+mat-list-item {
+    margin: 10px 10px 10px 0px;
+}
+
+.form {
+    float: right;
+    height: 10px !important;
+    display:flex;
+}
+
+.add {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+
+}
+.type{
+    z-index: 10;
+    position: absolute;
+    right: 0;
+    top: 0;
+    background-color: white !important;
+    margin-top: 5px;
+  
+}
+.mat-button-toggle-checked{
+background-color: #009688 !important;
+color: white;
+}
+.mat-button-toggle{
+    width: 100px;
+}
+.save{
+    font-size:small;
+    background-color:#009688;
+    color: white;
+    margin-top: -5px;
+    padding: 0;
+    
+
+}
+.price-input{
+    margin-top: -15px;
+    margin-right: 10%;
+
+}
+.item:hover{
+    background-color: #eee;
+}
+.item{
+    margin-top: 10px;
+    margin: 0% !important;
+    height: 28px;
+}
+.news{
+    font-weight: bold;
+    color: grey;
+    background-color: white;
+}

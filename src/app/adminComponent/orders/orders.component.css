@@ -1,0 +1,130 @@
+table {
+    width: 100%;
+    margin-bottom: 10%;
+}
+
+.card-view {
+    width: 100%;
+    height: 100%;
+}
+
+.tile-one {
+    background-color: #eee;
+}
+
+.card-order:hover {
+    background-color: grey;
+}
+
+.card-order {
+    background-color: #eee;
+    cursor: pointer;
+}
+
+th.mat-header-cell {
+    font-size: small;
+    text-align: center;
+}
+
+td.mat-footer-cell, td.mat-cell {
+    text-align: center;
+}
+
+
+
+mat-card {
+    box-shadow: none !important;
+    text-shadow: none !important;
+}
+
+.mat-h2 {
+    margin-left: 43%;
+    font-size: 25px;
+    color: grey;
+}
+
+.card {
+    background-color: transparent;
+    width: 95%;
+    height: 90%;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    overflow-y: auto;
+}
+
+.mat-h3 {
+    font-size: large;
+    font-family: muli;
+    margin-top: 300px;
+    margin-left: 45%;
+}
+
+.mat-toolbar2 {
+    width: 100%;
+    background-color: #eee;
+    margin-top: 20px;
+    height: 50px;
+}
+
+.info {
+    background-color: #7ed4cd;
+}
+
+.mat-footer-cell {
+    background-color: rgb(184, 182, 182);
+}
+
+.done, .cancel {
+    padding-left: 12%;
+    padding-right: 12%;
+    margin-left: 4%;
+    cursor: pointer;
+    background-color: #7ed4cd;
+    color: white;
+    font-weight: bolder;
+
+}
+
+.button-update {
+    margin-top: -10%;
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+.click:hover {
+    cursor: pointer;
+    background-color: #b6eee8;
+}
+
+.blue {
+    background-color: #7ed4cd;
+}
+
+.mat-h5 {
+    font-size: 17px;
+    padding: 10px;
+    text-align: center;
+    color: red; 
+    font-weight: bold;  
+}
+.empty-div{
+    text-align:center;
+    font-size: large;
+    font-weight: bolder;
+}
+.odd{
+    background-color: whitesmoke;
+}
+@media print{
+    #print{
+        display: block !important;
+   
+    }
+    #other{
+    display: none;
+    }
+}
+#print{
+    display: none;
+
+}

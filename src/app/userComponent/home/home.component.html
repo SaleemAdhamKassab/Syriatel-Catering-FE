@@ -1,0 +1,424 @@
+<mat-drawer-container style="height: 100%">
+  <mat-drawer #drawer mode="over" class="drawer">
+    <div class="login-wrapper" fxLayout="row" fxLayoutAlign="center center">
+      <mat-toolbar style="height: 60px; padding-left: 28%" color="primary"
+        >Welcome {{ user }}</mat-toolbar
+      >
+
+      <mat-card class="box">
+        <form class="example-form" [formGroup]="myInfo">
+          <mat-card-content>
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>Arabic Name</mat-label>
+              <input
+                matInput
+                placeholder="Arabic Name"
+                formControlName="Note"
+              />
+              <mat-error> Arabic Name is required </mat-error>
+            </mat-form-field>
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>Phone</mat-label>
+              <input matInput placeholder="Phone" formControlName="Phone" />
+              <mat-error> must be 10 digits start with '09' </mat-error>
+            </mat-form-field>
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>Choose a Building...</mat-label>
+              <mat-select formControlName="Location">
+                <mat-option
+                  [value]="building"
+                  *ngFor="let building of buildings"
+                  >{{ building }}
+                </mat-option>
+              </mat-select>
+              <mat-error>the building is required </mat-error>
+            </mat-form-field>
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>Choose a Floor...</mat-label>
+              <mat-select formControlName="Floor">
+                <mat-option
+                  [value]="Floor"
+                  *ngFor="let Floor of Floors | slice : 0 : getBuilding()"
+                >
+                  {{ Floor }}
+                </mat-option>
+              </mat-select>
+              <mat-error>the floor is required </mat-error>
+            </mat-form-field>
+            <button
+              mat-stroked-button
+              color="accent"
+              class="btn-block"
+              (click)="updateUser()"
+              [disabled]="check() || myInfo.invalid"
+            >
+              Update
+            </button>
+          </mat-card-content>
+        </form>
+      </mat-card>
+      <div class="footer">
+        MIS-Technical Performance Information Analysis <br /><br />
+        <img src="../../../assets/Syriatel_Logo.png" width="100" height="100" />
+      </div>
+    </div>
+  </mat-drawer>
+
+  <mat-toolbar color="primary" style="height: 60px">
+    <button
+      type="button"
+      mat-button
+      (click)="drawer.toggle()"
+      class="button-side-nav"
+    >
+       ☰
+    </button>
+    Syriatel Cafeteria
+    <div class="hwrap" style="width: 40%; margin-left: 300px">
+      <div class="hmove">
+        <div class="hitem" *ngFor="let x of news">{{ x.Title }}</div>
+      </div>
+    </div>
+    <button mat-stroked-button color="warn" class="refresh" (click)="refresh()">
+      تحديث
+    </button>
+    <img
+      src="http://mysites/User%20Photos/Profile%20Pictures/{{
+        user
+      }}_LThumb.jpg"
+      class="circle_img_s"
+    />
+
+    <a
+      target="_blank"
+      class="guide"
+      href="../../../assets/Syriatel Cafeteria.pdf"
+      title=""
+    >
+      دليل الاستخدام
+    </a>
+  </mat-toolbar>
+  <!--   <audio controls autoplay style="display:none" >
+        <source src="assets/Sound.mp3" type="audio/mp3"  volume="1" >
+        </audio> -->
+  <div style="height: 90%">
+    <img src="assets/food.jpg" class="photo" />
+    <div *ngIf="!Done" class="spinner">
+      <mat-spinner color="accent"></mat-spinner>
+    </div>
+    <br />
+    <mat-grid-list cols="60" rowHeight="96%" *ngIf="Done">
+      <mat-grid-tile colspan="1"></mat-grid-tile>
+      <mat-grid-tile colspan="43">
+        <mat-card [ngClass]="active == 0 ? 'main-card-na' : 'main-card'">
+          <img *ngIf="active == 0" src="assets/close.jpg" class="store-colse" />
+
+          <div style="width: 70%; overflow-y: auto; height: 98%">
+            <mat-tab-group
+              mat-align-tabs="start"
+              backgroundColor="warn"
+              color="accent"
+              *ngIf="active > 0"
+            >
+              <span *ngFor="let cat of Products">
+                <mat-tab label="{{ cat.Name }}" *ngIf="cat.Enable">
+                  <br />
+                  <mat-grid-list cols="4" rowHeight="2:1" gutterSize="5">
+                    <ng-container *ngFor="let i of cat.Products">
+                      <mat-grid-tile>
+                        <mat-card
+                          class="container-card mat-elevation-z3"
+                          (contextmenu)="rightClick($event, i)"
+                          (click)="
+                            i.Enable && i.AvailableProduact > 0
+                              ? addItem(i)
+                              : ''
+                          "
+                          [ngClass]="
+                            i.Enable && i.AvailableProduact > 0
+                              ? 'tile'
+                              : 'tile-disabled'
+                          "
+                        >
+                          <div style="height: 100%; display: block">
+                            <span style="text-align: center">
+                              <h4
+                                class="mat-h4"
+                                style="margin: 5px 0px -1px 0px"
+                              >
+                                {{ i.Name }}
+                              </h4>
+                              <h3>{{ i.InitialPrice | number }}</h3>
+                            </span>
+                            <div
+                              class="counter"
+                              *ngIf="i.Enable && i.AvailableProduact > 0"
+                            >
+                              {{ i.value }}
+                            </div>
+                            <!--  <div class="show-image" (click)="showItem(i)"
+                                                            *ngIf="cat.Id==22||cat.Id==23">✥</div> -->
+                            <div
+                              class="disable-meal"
+                              *ngIf="!(i.Enable && i.AvailableProduact > 0)"
+                            >
+                              RunOut
+                            </div>
+                          </div>
+                        </mat-card>
+                      </mat-grid-tile>
+                    </ng-container>
+                  </mat-grid-list>
+                </mat-tab>
+              </span>
+            </mat-tab-group>
+          </div>
+          <!--  <div style="width: 30%;margin-left: 100px;"  *ngIf="active==0" >
+                       <audio controls autoplay  >
+                            <source src="assets/rain.mp3" type="audio/mp3"  volume="1" >
+                            </audio> </div> -->
+          <div style="width: 30%" *ngIf="active > 0">
+            <mat-grid-list
+              cols="1"
+              rowHeight="75"
+              style="margin-bottom: -10%; margin-left: 3%"
+            >
+              <mat-grid-tile>
+                <mat-toolbar
+                  style="width: 100%; padding: 0% 40% 0% 38%; color: grey"
+                  >الطلب الحالي
+                </mat-toolbar>
+              </mat-grid-tile>
+              <mat-grid-tile>
+                <mat-button-toggle-group value="1"
+                  ><!--(change)="changeValueToggle($event)"-->
+                  <mat-button-toggle
+                    value="1"
+                    style="background-color: darkgray; color: white"
+                    >الطريقة العادية
+                  </mat-button-toggle>
+                  <mat-button-toggle value="2" disabled
+                    >عن طريق كاش</mat-button-toggle
+                  >
+                </mat-button-toggle-group>
+              </mat-grid-tile>
+              <mat-grid-tile>
+                <mat-form-field appearance="outline" style="width: 80%">
+                  <mat-label>ملاحظات الطلب</mat-label>
+                  <input matInput [(ngModel)]="Note" autocomplete="off" />
+                </mat-form-field>
+                <button
+                  mat-raised-button
+                  (click)="sendOrder()"
+                  [disabled]="empty()"
+                  style="margin: 2%; margin-top: -2%"
+                  color="primary"
+                >
+                  ارسال
+                </button>
+              </mat-grid-tile>
+            </mat-grid-list>
+
+            <mat-grid-list cols="1" rowHeight="15:4">
+              <mat-grid-tile></mat-grid-tile>
+              <!--   <mat-grid-tile *ngIf="userInfo">
+                                <mat-form-field appearance="outline"
+                                    style="width: 30%;margin-left: 10px;padding: 10px;">
+                                    <mat-label>البناء</mat-label>
+                                    <mat-select [(ngModel)]="building">
+                                        <mat-option *ngFor="let x of buildings" [value]="x">
+                                            {{x}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" style="width: 30%;padding: 10px;">
+                                    <mat-label>الطابق </mat-label>
+                                    <mat-select [(ngModel)]="floor">
+                                        <mat-option *ngFor="let x of Floors |slice:0:getTempBuilding()" [value]="x">
+                                            {{x}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <button mat-raised-button (click)="sendOrder()" [disabled]="empty()"
+                                    color="accent">ارسال</button>
+                            </mat-grid-tile> -->
+              <mat-grid-tile rowspan="3">
+                <div style="overflow-y: auto; height: 100%">
+                  <div *ngFor="let i of groupSelected" style="text-align: left">
+                    <mat-accordion class="example-headers-align">
+                      <mat-expansion-panel
+                        [ngClass]="
+                          i.check
+                            ? 'card-group  mat-elevatio-z8'
+                            : 'card-group-not-found  mat-elevatio-z8'
+                        "
+                      >
+                        <mat-expansion-panel-header>
+                          <mat-panel-title>
+                            <div
+                              style="display: flex; width: 100%; margin-top: 5%"
+                            >
+                              <button
+                                mat-mini-fab
+                                class="mini-fab"
+                                (click)="removeCheck(i)"
+                              >
+                                ⛔️
+                              </button>
+
+                              <h4
+                                style="
+                                  font-size: 15px;
+                                  font-weight: bold;
+                                  width: 45%;
+                                "
+                              >
+                                {{ i.Name }}
+                              </h4>
+                              <h5 style="width: 25%; color: teal">
+                                {{ i.value }}
+                              </h5>
+
+                              <h5
+                                style="
+                                  background-color: #eee;
+                                  border-radius: 20%;
+                                  width: 25%;
+                                "
+                              >
+                                {{ i.value * i.InitialPrice | number }}
+                              </h5>
+                            </div>
+                          </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <mat-form-field
+                          style="width: 80%; margin-left: 10%"
+                          appearance="fill"
+                        >
+                          <mat-label>اي اضافات </mat-label>
+                          <mat-select
+                            [(ngModel)]="i.Extras"
+                            multiple
+                            [disabled]="
+                              i.CategoryId == 22 || i.CategoryId == 23
+                            "
+                            (selectionChange)="addExtra($event, i)"
+                          >
+                            <mat-option *ngFor="let x of Extra" [value]="x">
+                              <h5 style="font-weight: bold; margin-top: 10px">
+                                {{ x.Name }} :{{ x.Price }}
+                              </h5>
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                        <input matInput />
+                        <mat-grid-list
+                          cols="2"
+                          rowHeight="20px"
+                          *ngFor="let y of i.Extras"
+                        >
+                          <mat-grid-tile style="color: green"
+                            >{{ y.Name }}
+                          </mat-grid-tile>
+                          <mat-grid-tile>
+                            <input
+                              type="number"
+                              #searchBar
+                              [value]="i.value"
+                              (change)="inputChanged(i, y, searchBar.value)"
+                              matInput
+                              style="font-weight: bold"
+                              min="1"
+                              max="{{ i.value }}"
+                            />
+                          </mat-grid-tile>
+                        </mat-grid-list>
+                      </mat-expansion-panel>
+                    </mat-accordion>
+                  </div>
+                </div>
+              </mat-grid-tile>
+              <mat-grid-tile>
+                <h2 class="total-price">{{ price | number }}</h2>
+              </mat-grid-tile>
+            </mat-grid-list>
+          </div>
+        </mat-card>
+      </mat-grid-tile>
+      <mat-grid-tile></mat-grid-tile>
+      <mat-grid-tile colspan="14">
+        <mat-card class="card-invoice">
+          <mat-toolbar class="toolbar">فواتيري </mat-toolbar>
+          <br />
+          <div style="margin: 10px">
+            <mat-form-field appearance="outline" class="form-date">
+              <mat-label> Date</mat-label>
+              <input matInput [matDatepicker]="Date" [(ngModel)]="Date1" />
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="Date"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #Date></mat-datepicker>
+            </mat-form-field>
+            <button
+              class="button-show"
+              mat-stroked-button
+              color="primary"
+              (click)="getMyOrders()"
+            >
+              اظهار
+            </button>
+          </div>
+          <div *ngIf="myOrderslength == 0" class="invoice-result">
+            لايوجد فواتير لهذا اليوم
+          </div>
+          <!-- <div *ngFor="let order of myOrders; let i = index">
+            <mat-card (click)="openInvoice(order)" class="order">
+              <mat-card-title style="font-size: small; font-weight: 100">
+                <mat-grid-list cols="4" rowHeight="20">
+                  <mat-grid-tile> Order #{{ order.Id }} </mat-grid-tile>
+                  <mat-grid-tile
+                    >⏱ {{ order.CreateDate | date : "h:mm" }}
+                  </mat-grid-tile>
+                  <mat-grid-tile>{{
+                    order.Status.Name == "Done" ? "Ready" : order.Status.Name
+                  }}</mat-grid-tile>
+                  <mat-grid-tile>{{ getExpected(order) }}</mat-grid-tile>
+                </mat-grid-list>
+              </mat-card-title>
+            </mat-card>
+          </div> -->
+
+          <div *ngFor="let order of myOrders; let i = index">
+            <mat-card (click)="openInvoice(order)" class="order">
+              <mat-card-title style="font-size: small; font-weight: 100">
+                <mat-grid-list cols="4" rowHeight="20">
+                  <mat-grid-tile> Order #{{ order.Id }} </mat-grid-tile>
+                  <mat-grid-tile
+                    >⏱ {{ order.CreateDate | date : "h:mm" }}
+                  </mat-grid-tile>
+                  <mat-grid-tile>{{
+                    order.Status.Name == "Done" ? "Ready" : order.Status.Name
+                  }}</mat-grid-tile>
+
+                  <!-- Delete Button-->
+                  <mat-grid-tile *ngIf="order.StatusId == 2">
+                    <button
+                      mat-raised-button
+                      color="warn"
+                      (click)="deleteOrder(order, $event)"
+                      (click)="$event.stopPropagation()"
+                    >
+                      🗑 حذف
+                    </button>
+                  </mat-grid-tile>
+                </mat-grid-list>
+              </mat-card-title>
+            </mat-card>
+          </div>
+        </mat-card>
+        <mat-grid-tile></mat-grid-tile>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
+</mat-drawer-container>

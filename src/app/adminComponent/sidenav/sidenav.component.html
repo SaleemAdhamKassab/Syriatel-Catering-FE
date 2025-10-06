@@ -1,0 +1,40 @@
+ 
+<mat-toolbar color="primary" style="font-family: muli;height: 60px;" id="other" >
+    Syriatel Cafeteria
+</mat-toolbar>
+<mat-drawer-container class="example-container"  >
+     <mat-drawer #drawer class="example-sidenav" mode="side" opened position="end"id="other" >
+        <div >
+            <mat-card class="start-card">
+                    <mat-grid-list cols="1" rowHeight="80">
+                        <mat-grid-tile>
+                            <mat-card class="option"  routerLinkActive="active" [routerLink]="['products']" >
+                                الاساسية</mat-card>
+                        </mat-grid-tile>
+                        <mat-grid-tile>
+                            <mat-card class="option"  routerLinkActive="active" [routerLink]="['orders']"  [queryParams]="{ type: 'Pending' }">
+                                الطلبات الحالية </mat-card>
+                        </mat-grid-tile>
+                        <mat-grid-tile>
+                            <mat-card class="option" routerLinkActive="active" [routerLink]="['orders']"  [queryParams]="{ type: 'Done' }">
+                                الطلبات المنجزة</mat-card>
+                        </mat-grid-tile>
+                        <mat-grid-tile>
+                            <mat-card class="option" routerLinkActive="active" [routerLink]="['orders']"  [queryParams]="{ type: 'Canceled' }">
+                                الطلبات الملغاة</mat-card>
+                        </mat-grid-tile>
+                        <mat-grid-tile>
+                            <mat-card class="option" routerLinkActive="active" [routerLink]="['statistics']" >
+                                احصائيات</mat-card>
+                        </mat-grid-tile>
+                    </mat-grid-list>
+            </mat-card>
+        </div>
+    </mat-drawer>
+ 
+    <mat-drawer-content>
+        <router-outlet ></router-outlet>
+    </mat-drawer-content>
+
+</mat-drawer-container>
+ 
